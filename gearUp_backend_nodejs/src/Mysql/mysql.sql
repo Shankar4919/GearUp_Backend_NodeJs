@@ -1,6 +1,6 @@
-CREATE DATABASE productshop;
+CREATE DATABASE gearup;
 
-USE productshop;
+USE gearup;
 
 CREATE TABLE person
 (
@@ -90,11 +90,8 @@ CREATE TABLE orderDetails
 
 
 
+/*-----------------  Storage PROCEDURE  || GearUp ----------------------*/
 
-
-/*---------------------------------------------------------------------------*/
-/*-----------------  Storage PROCEDURE  || FRAVE SHOP ----------------------*/
-/*-------------------------------------------------------------------------*/
 
 DELIMITER //
 CREATE PROCEDURE SP_GET_USER_BY_ID(IN UID INT )
