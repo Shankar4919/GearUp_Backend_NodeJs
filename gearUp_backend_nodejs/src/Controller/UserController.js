@@ -91,68 +91,7 @@ const changeFotoProfile = async ( req = request, res = response ) => {
     }
 }
 
-const updateInformationUser = async ( req = request, res = response ) => {
 
-    try {
-
-        const { firstname, lastname, phone, address, reference } = req.body;
-
-        const conn = await connect();
-
-        await conn.query(`CALL SP_UPDATE_INFORMATION(?,?,?,?,?,?);`, [ req.uidPerson, firstname, lastname, phone, address, reference ]);
-
-        await conn.end();
-
-        return res.json({
-            resp: true,
-            message: 'Infomation personal added'
-        });
-        
-    } catch (err) {
-        return res.json({
-            resp: false,
-            message: err
-        });
-    }
-}
-
-const updateStreetAddress = async ( req, res = response ) => {
-
-   try {
-
-        const { address, reference } = req.body;
-        
-        const conn = await connect();
-
-        await conn.query(`CALL SP_UPDATE_STREET(?,?,?);`, [ req.uidPerson, address, reference ]);
-
-        await conn.end();
-        
-        return res.json({
-            resp: true,
-            message: 'Street Address updated',
-        });
-        
-    } catch (err) {
-       return res.status(500).json({
-           resp: false,
-           message: err,
-       });
-   }
-
-}
-
-const logout = async(req, res, next)=>{
-    res.cookie("token", null, {
-        expires: new Date(Date.now()),
-        httpOnly: true,
-    });
-
-    res.status(200).json({
-        success: true,
-        message: "Logged Out",
-    });
-};
 
 
 module.exports = {
