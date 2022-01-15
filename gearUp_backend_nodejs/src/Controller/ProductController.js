@@ -29,10 +29,36 @@ const addNewProduct = async (req = request, res = response) => {
     }
 }
 
+const getProductsForHomeCarousel = async ( req = request, res = response ) => {
+
+    try {
+
+        const conn = await connet();
+
+        const rows = await conn.query('SELECT * FROM Home_carousel');
+
+        await conn.end();
+
+        return res.json({
+            resp: true,
+            message: 'Get List products home',
+            slideProducts: rows[0]
+        });
+        
+    } catch (err) {
+        return res.status(500).json({
+            resp: false,
+            message: err
+        });
+    }
+
+}
+
 
 
 
 module.exports = {
     addNewProduct,
+    getProductsForHomeCarousel,
 
 }
