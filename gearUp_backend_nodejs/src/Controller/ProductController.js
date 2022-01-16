@@ -54,11 +54,36 @@ const getProductsForHomeCarousel = async ( req = request, res = response ) => {
 
 }
 
+const getListProductsHome = async (req = request, res = response) => {
+
+    try {
+
+        const conn = await connet();
+
+        const products = await conn.query(`CALL SP_LIST_PRODUCTS_HOME(?);`,[ req.uidPerson ]);
+
+        await conn.end();
+
+        return res.json({
+            resp: true,
+            message: 'Get List Products for Home',
+            listProducts: products[0][0]
+        });
+        
+    } catch (err) {
+        return res.status(500).json({
+            resp: false,
+            message: err
+        });
+    }
+}
+
 
 
 
 module.exports = {
     addNewProduct,
     getProductsForHomeCarousel,
+    getListProductsHome
 
 }
