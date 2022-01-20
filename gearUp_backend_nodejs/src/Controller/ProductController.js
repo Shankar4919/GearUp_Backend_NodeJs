@@ -78,12 +78,46 @@ const getListProductsHome = async (req = request, res = response) => {
     }
 }
 
+const likeOrUnlikeProduct = async (req = request, res = response) => {
+
+    try {
+
+        const { uidProduct } = req.body;
+
+        const conn = await connet();
+
+        const isLike = await conn.query('SELECT COUNT(uidFavorite) isfavorite FROM favorite WHERE user_id = ? AND product_id = ?', [ req.uidPerson, uidProduct ]);
+
+        if( isLike[0][0].isfavorite > 0 ){
+
+            await conn.query('DELETE FROM favorite WHERE user_id = ? AND product_id = ?', [ req.uidPerson, uidProduct ]);
+
+
+            return res.json({
+                resp: true,
+                message: 'Unlike'
+            });
+        }
+
+        await conn.query('INSERT INTO favorite (user_id, product_id) VALUE (?,?)', [ req.uidPerson, uidProduct ]);
+
+
+        return res({
+            resp: true,
+            message: 'Like'
+        });
+        
+    } 
+
+}
+
 
 
 
 module.exports = {
     addNewProduct,
     getProductsForHomeCarousel,
-    getListProductsHome
+    getListProductsHome,
+    likeOrUnlikeProduct
 
 }
