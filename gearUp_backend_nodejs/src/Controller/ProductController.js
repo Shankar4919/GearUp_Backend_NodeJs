@@ -92,6 +92,7 @@ const likeOrUnlikeProduct = async (req = request, res = response) => {
 
             await conn.query('DELETE FROM favorite WHERE user_id = ? AND product_id = ?', [ req.uidPerson, uidProduct ]);
 
+            await conn.end();
 
             return res.json({
                 resp: true,
@@ -101,13 +102,19 @@ const likeOrUnlikeProduct = async (req = request, res = response) => {
 
         await conn.query('INSERT INTO favorite (user_id, product_id) VALUE (?,?)', [ req.uidPerson, uidProduct ]);
 
+        await conn.end();
 
-        return res({
+        return res.json({
             resp: true,
             message: 'Like'
         });
         
-    } 
+    } catch (err) {
+        return res.status(500).json({
+            resp: false,
+            message: err
+        });
+    }
 
 }
 
