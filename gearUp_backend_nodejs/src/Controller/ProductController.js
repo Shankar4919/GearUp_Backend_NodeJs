@@ -78,35 +78,21 @@ const getListProductsHome = async (req = request, res = response) => {
     }
 }
 
-const likeOrUnlikeProduct = async (req = request, res = response) => {
+
+const getAllListCategories = async (req = request, res = response) => {
 
     try {
 
-        const { uidProduct } = req.body;
-
         const conn = await connet();
 
-        const isLike = await conn.query('SELECT COUNT(uidFavorite) isfavorite FROM favorite WHERE user_id = ? AND product_id = ?', [ req.uidPerson, uidProduct ]);
-
-        if( isLike[0][0].isfavorite > 0 ){
-
-            await conn.query('DELETE FROM favorite WHERE user_id = ? AND product_id = ?', [ req.uidPerson, uidProduct ]);
-
-            await conn.end();
-
-            return res.json({
-                resp: true,
-                message: 'Unlike'
-            });
-        }
-
-        await conn.query('INSERT INTO favorite (user_id, product_id) VALUE (?,?)', [ req.uidPerson, uidProduct ]);
+        const category = await conn.query('SELECT * FROM Category');
 
         await conn.end();
 
         return res.json({
             resp: true,
-            message: 'Like'
+            message: 'Get All List Categories',
+            categories: category[0]
         });
         
     } catch (err) {
@@ -125,6 +111,7 @@ module.exports = {
     addNewProduct,
     getProductsForHomeCarousel,
     getListProductsHome,
-    likeOrUnlikeProduct
+    likeOrUnlikeProduct,
+    getAllListCategories
 
 }
