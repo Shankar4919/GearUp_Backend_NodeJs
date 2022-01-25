@@ -128,6 +128,31 @@ const productFavoriteForUser = async (req = request, res = response) => {
     }
 }
 
+const getProductsForCategories = async (req = request, res = response) => {
+
+    try {
+
+        const conn = await connet();
+
+        const products = await conn.query(`CALL SP_LIST_PRODUCTS_FOR_CATEGORY(?,?);`, [ req.params.idCategory, req.uidPerson ]); 
+
+        await conn.end();
+
+        res.json({
+            resp: true,
+            message : 'List Products',
+            listProducts: products[0][0] 
+        });
+        
+    } catch (err) {
+        return res.status(500).json({
+            resp: false,
+            message: err
+        });
+    }
+
+}
+
 
 
 
@@ -136,6 +161,7 @@ module.exports = {
     getProductsForHomeCarousel,
     getListProductsHome,
     getAllListCategories,
-    productFavoriteForUser
+    productFavoriteForUser,
+    getProductsForCategories
 
 }
