@@ -192,6 +192,36 @@ const getProductsForCategories = async (req = request, res = response) => {
 
 }
 
+const saveOrderBuyProducts = async (req = request, res = response) => {
+
+    try {
+        
+     const { receipt, amount, products  } = req.body;
+ 
+     const conn = await connet();
+  
+     const db = await conn.query('INSERT INTO orderBuy (user_id, receipt, amount) VALUES (?,?,?)', [ req.uidPerson, receipt, amount ]);
+ 
+     products.forEach(e => {
+         conn.query('INSERT INTO orderDetails (orderBuy_id, product_id, quantity, price) VALUES (?,?,?,?)', [db[0].insertId, e.uidProduct, e.amount, e.price]);
+     });
+ 
+     // await conn.end();
+ 
+     return res.json({
+         resp: true,
+         message: 'Products save'
+     });
+ 
+ 
+    } catch (err) {
+     return res.status(500).json({
+         resp: false,
+         message: err
+     });
+    }
+ }
+
 
 
 
@@ -203,7 +233,7 @@ module.exports = {
     getAllListCategories,
     productFavoriteForUser,
     getProductsForCategories,
-    getOrderDetailsProducts,
-    likeOrUnlikeProduct
+    likeOrUnlikeProduct,
+    saveOrderBuyProducts
 
 }
