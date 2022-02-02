@@ -222,6 +222,28 @@ const saveOrderBuyProducts = async (req = request, res = response) => {
     }
  }
 
+ const getAllPurchasedProducts = async ( req, res = response ) => {
+
+    try {
+
+        const conn = await connet();
+
+        const orderbuy = await conn.query('SELECT * FROM orderBuy WHERE user_id = ?', [req.uidPerson]);
+
+        await conn.end();
+
+        res.json({
+            resp: true,
+            msg : 'Get Puchased Products',
+            orderBuy : orderbuy[0],
+        });
+        
+    } catch (err) {
+        
+    }
+   
+}
+
 
 
 
@@ -234,6 +256,7 @@ module.exports = {
     productFavoriteForUser,
     getProductsForCategories,
     likeOrUnlikeProduct,
-    saveOrderBuyProducts
+    saveOrderBuyProducts,
+    getAllPurchasedProducts
 
 }

@@ -7,7 +7,8 @@ const {
     productFavoriteForUser,
     getProductsForCategories,
     saveOrderBuyProducts,
-    likeOrUnlikeProduct
+    likeOrUnlikeProduct,
+    getAllPurchasedProducts
  } = require('../Controller/ProductController');
 const { validateToken }  = require('../Middlewares/ValidateToken');
 const { uploadsProduct } = require('../Helpers/Multer');
@@ -21,6 +22,7 @@ const router = Router();
     router.get('/product/get-all-favorite', validateToken, productFavoriteForUser);
     router.get('/product/get-products-for-category/:idCategory', validateToken, getProductsForCategories);
     router.post('/product/save-order-buy-product', validateToken, saveOrderBuyProducts);
+    router.get('/product/get-all-purchased-products', validateToken, getAllPurchasedProducts);
     router.post('/product/like-or-unlike-product', validateToken, likeOrUnlikeProduct);
 
 module.exports = router;
