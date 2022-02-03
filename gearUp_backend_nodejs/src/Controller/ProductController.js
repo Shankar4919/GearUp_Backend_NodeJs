@@ -244,6 +244,27 @@ const saveOrderBuyProducts = async (req = request, res = response) => {
    
 }
 
+const getOrderDetailsProducts = async ( req, res = response ) => {
+
+    try {
+
+        const conn = await connet();
+
+        const orderDetails = await conn.query(`CALL SP_ORDER_DETAILS(?);`, [req.params.uidOrder]);
+
+        await conn.end();
+
+        res.json({
+            resp: true,
+            msg : 'Get Puchased Products',
+            orderDetails : orderDetails[0][0],
+        });
+        
+    } catch (err) {
+        
+    }
+   
+}
 
 
 
@@ -257,6 +278,7 @@ module.exports = {
     getProductsForCategories,
     likeOrUnlikeProduct,
     saveOrderBuyProducts,
-    getAllPurchasedProducts
+    getAllPurchasedProducts,
+    getOrderDetailsProducts
 
 }
