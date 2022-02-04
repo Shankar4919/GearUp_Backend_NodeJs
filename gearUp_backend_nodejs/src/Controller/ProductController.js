@@ -3,32 +3,6 @@ const connet = require('../DataBase/DataBase');
 
 
 
-const addNewProduct = async (req = request, res = response) => {
-
-    try {
-
-        const { name, description, stock, price, uidCategory } = req.body;
-
-        const conn = await connet();
-
-        await conn.query('INSERT INTO Products (nameProduct, description, codeProduct, stock, price, picture, category_id) VALUE (?,?,?,?,?,?,?)', 
-            [ name, description, '000' + name, stock, price, req.file.filename, uidCategory ]);
-
-        await conn.end();   
-
-        return res.json({
-            resp: true,
-            message: 'Product Added'
-        })
-        
-    } catch (err) {
-        return res.status(500).json({
-            resp: false,
-            message: err
-        });
-    }
-}
-
 const getProductsForHomeCarousel = async ( req = request, res = response ) => {
 
     try {
@@ -77,6 +51,7 @@ const getListProductsHome = async (req = request, res = response) => {
         });
     }
 }
+
 const likeOrUnlikeProduct = async (req = request, res = response) => {
 
     try {
@@ -116,7 +91,6 @@ const likeOrUnlikeProduct = async (req = request, res = response) => {
     }
 
 }
-
 
 const getAllListCategories = async (req = request, res = response) => {
 
@@ -194,35 +168,61 @@ const getProductsForCategories = async (req = request, res = response) => {
 
 const saveOrderBuyProducts = async (req = request, res = response) => {
 
-    try {
-        
-     const { receipt, amount, products  } = req.body;
- 
-     const conn = await connet();
-  
-     const db = await conn.query('INSERT INTO orderBuy (user_id, receipt, amount) VALUES (?,?,?)', [ req.uidPerson, receipt, amount ]);
- 
-     products.forEach(e => {
-         conn.query('INSERT INTO orderDetails (orderBuy_id, product_id, quantity, price) VALUES (?,?,?,?)', [db[0].insertId, e.uidProduct, e.amount, e.price]);
-     });
- 
-     // await conn.end();
- 
-     return res.json({
-         resp: true,
-         message: 'Products save'
-     });
- 
- 
-    } catch (err) {
-     return res.status(500).json({
-         resp: false,
-         message: err
-     });
-    }
- }
+   try {
+       
+    const { receipt, amount, products  } = req.body;
 
- const getAllPurchasedProducts = async ( req, res = response ) => {
+    const conn = await connet();
+ 
+    const db = await conn.query('INSERT INTO orderBuy (user_id, receipt, amount) VALUES (?,?,?)', [ req.uidPerson, receipt, amount ]);
+
+    products.forEach(e => {
+        conn.query('INSERT INTO orderDetails (orderBuy_id, product_id, quantity, price) VALUES (?,?,?,?)', [db[0].insertId, e.uidProduct, e.amount, e.price]);
+    });
+
+    // await conn.end();
+
+    return res.json({
+        resp: true,
+        message: 'Products save'
+    });
+
+
+   } catch (err) {
+    return res.status(500).json({
+        resp: false,
+        message: err
+    });
+   }
+}
+
+const addNewProduct = async (req = request, res = response) => {
+
+    try {
+
+        const { name, description, stock, price, uidCategory } = req.body;
+
+        const conn = await connet();
+
+        await conn.query('INSERT INTO Products (nameProduct, description, codeProduct, stock, price, picture, category_id) VALUE (?,?,?,?,?,?,?)', 
+            [ name, description, '000' + name, stock, price, req.file.filename, uidCategory ]);
+
+        await conn.end();   
+
+        return res.json({
+            resp: true,
+            message: 'Product Added'
+        })
+        
+    } catch (err) {
+        return res.status(500).json({
+            resp: false,
+            message: err
+        });
+    }
+}
+
+const getAllPurchasedProducts = async ( req, res = response ) => {
 
     try {
 
@@ -268,17 +268,15 @@ const getOrderDetailsProducts = async ( req, res = response ) => {
 
 
 
-
 module.exports = {
-    addNewProduct,
     getProductsForHomeCarousel,
     getListProductsHome,
+    likeOrUnlikeProduct,
     getAllListCategories,
     productFavoriteForUser,
-    getProductsForCategories,
-    likeOrUnlikeProduct,
     saveOrderBuyProducts,
+    getProductsForCategories,
+    addNewProduct,
     getAllPurchasedProducts,
     getOrderDetailsProducts
-
 }
