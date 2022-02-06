@@ -12,14 +12,13 @@ app.use( express.urlencoded({ extended: false }) );
 
 
 // Routes
+app.use('/api', require("./Routes/user.routes"));
 app.use('/api', require("./Routes/auth.routes"));
-app.use('/api', require("./Routes/auth.routes"));
-app.use('/api', require("./Routes/category.routes"));
 app.use('/api', require("./Routes/product.routes"));
+app.use('/api', require("./Routes/category.routes"));
+app.use('/api', require("./Routes/notification.routes"));
 
 // This folder will be Public
-app.use( express.static( path.join( __dirname, 'Uploads/Profile') ));
-app.use( express.static( path.join( __dirname, 'Uploads/Categories' )));
 app.use( express.static( path.join( __dirname, 'Uploads/Profile') ));
 app.use( express.static( path.join( __dirname, 'Uploads/Home' )));
 app.use( express.static( path.join( __dirname, 'Uploads/Products' )));
