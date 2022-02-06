@@ -1,7 +1,11 @@
+//provide your one single APP_ID and API_KEY
+
 const ONE_SIGNAL_CONFIG = {
-    APP_ID: "304a82f9-84b7-4c91-b086-377b0de759cb",
-    API_KEY: "MGNiMDc2NTYtM2Y4YS00Y2YwLWI2MzYtOTVjNDMxNmNhYjk4",
+    APP_ID: "",
+    API_KEY: "",
 };
+
+
 
 module.exports = {
     ONE_SIGNAL_CONFIG
